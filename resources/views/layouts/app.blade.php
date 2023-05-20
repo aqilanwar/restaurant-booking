@@ -14,14 +14,10 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
-        @laravelViewsStyles
-
         <!-- Styles -->
         @livewireStyles
     </head>
     <body class="font-sans antialiased">
-        @laravelViewsScripts
-
         <x-banner />
 
         <div class="min-h-screen bg-gray-100">

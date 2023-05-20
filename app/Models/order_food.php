@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class order_food extends Model
 {
     use HasFactory;
+
+
+    public function food()
+    {
+        return $this->belongsTo(Food::class);
+    }
 }
