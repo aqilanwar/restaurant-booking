@@ -16,8 +16,9 @@
         </div>
       @endif
       <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-5 sm:p-6">
-        <h1 class="text-3xl font-bold mb-4">Add new category</h1>
-        <form action="{{ route('category.create') }}" method="POST">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+          {{ __('Add new category') }}
+          </h2>           <form action="{{ route('category.create') }}" method="POST">
           <div class="flex flex-wrap justify-between">
             @csrf
               <div class="w-full py-3 px-3">
@@ -29,8 +30,9 @@
               </div>
           </div>
         </form>
-        <h1 class="text-3xl font-bold mb-4">Category</h1>
-        <div class="bg-white shadow-md rounded my-6">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+          {{ __('Category list') }}
+          </h2>           <div class="bg-white shadow-md rounded my-6">
           <table class="min-w-max w-full table-auto">
             <thead>
               <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">

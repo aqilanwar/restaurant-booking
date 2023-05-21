@@ -5,15 +5,35 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="/">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
-                </div>
-
+                </div>  
+                @if(Auth::check() && Auth::user()->is_admin)
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link href="{{ route('admin.reservation') }}" :active="request()->routeIs('admin.reservation')">
+                        {{ __('View Reservation') }}
+                    </x-nav-link>
+                </div>
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link href="{{ route('category') }}" :active="request()->routeIs('category')">
+                        {{ __('Manage Category') }}
+                    </x-nav-link>
+                </div>
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link href="{{ route('food') }}" :active="request()->routeIs('food')">
+                        {{ __('Manage Food') }}
+                    </x-nav-link>
+                </div>
+
+                @else
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link href="{{ route('reservation') }}" :active="request()->routeIs('reservation')">
+                        {{ __('My Reservation') }}
                     </x-nav-link>
                 </div>
                 <!-- Navigation Links -->
@@ -28,6 +48,7 @@
                         {{ __('View Menu') }}
                     </x-nav-link>
                 </div>
+                @endif
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">

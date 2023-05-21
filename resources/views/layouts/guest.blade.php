@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="icon" href="{{ asset('storage/image/logo.png') }}" type="image/x-icon">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -15,7 +16,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        <div class="font-sans text-gray-900 antialiased">
+        <div class="font-sans text-gray-900 antialiased bg-white">
             {{ $slot }}
         </div>
     </body>

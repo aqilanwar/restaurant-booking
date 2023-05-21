@@ -159,28 +159,33 @@ class OrderController extends Controller
     /**
      * Display checkout page
      */
-    public function Checkout()
+    public function Checkout(Request $request)
     {
+        if ($request->has('order_id')) {
+            $data = order_food::where('order_id' , $request->order_id)->get();
+            $total_food = 0;
+            foreach ($data as $item) {
+                $total_food += $item->price * $item->quantity;
+            }            
+        }else{
 
-        $data = Session::get('cart', []); // Get the current cart from the session
-        $food_details = [];
-        $total_food = 0;
-        // $data = session('cart');
-        // $data = [];
+            $data = Session::get('cart', []); // Get the current cart from the session
+            $food_details = [];
+            $total_food = 0;
+            // $data = session('cart');
+            // $data = [];
 
-        foreach ($data as $food) {
-            $food_id = $food['food_id'];
-            // Retrieve the food details based on the food_id
-            $food_details[] = [
-                'food' => Food::find($food_id),
-                'quantity' => $food['quantity'],
-            ];
-            $total_food += $food['quantity'] * $food_details[count($food_details) - 1]['food']->price;
-            // echo $food_details[count($food_details) - 1]['food']->name;
+            foreach ($data as $food) {
+                $food_id = $food['food_id'];
+                // Retrieve the food details based on the food_id
+                $food_details[] = [
+                    'food' => Food::find($food_id),
+                    'quantity' => $food['quantity'],
+                ];
+                $total_food += $food['quantity'] * $food_details[count($food_details) - 1]['food']->price;
+                // echo $food_details[count($food_details) - 1]['food']->name;
+            }
         }
-        
-        // dd($foodDetails);
-        // dd($total_food);
         return view('user.checkout', compact('total_food'));
     }
 
@@ -244,7 +249,41 @@ class OrderController extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Payment updated.');
+            Session::forget('cart');
+            Session::forget('order');
+            
+            return redirect()->route('reservation')->with('success', 'Reservation succesfully processed. Please wait for admin to approve your order. Thank you');
+        }else{
+            return redirect()->back()->with('error', 'Upload receipt failed.');
+
+        }
+    }
+    /**
+     * Update receipt 
+     */
+    public function UpdateReceipt(Request $request)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'receipt' => 'required|mimes:jpeg,png,bmp,gif,pdf|max:2048', // Allow image (jpeg, png, bmp, gif) and PDF files, maximum size 2MB
+        ]);
+
+        if ($request->file('receipt')->isValid()) {
+            if ($request->has('order_id')) {
+
+                $file = $request->file('receipt');
+                $fileName = time() . '.' . $file->getClientOriginalExtension();
+                // Move the uploaded file to a specific location
+                $path = Storage::putFileAs('public', $file, $fileName);
+                order::where('id', $request->order_id)
+                ->update([
+                    'receipt' => $fileName,
+                    'status' => 0,
+                    'feedback' => null,
+                ]);
+            
+            }
+            return redirect()->route('reservation')->with('success', 'Reservation succesfully processed. Please wait for admin to approve your order. Thank you');
         }else{
             return redirect()->back()->with('error', 'Upload receipt failed.');
 
@@ -257,8 +296,52 @@ class OrderController extends Controller
     public function ReservationDetail()
     {
         $user_id = Auth::user()->id ;
-        $data = order::with('orders.food')->where('user_id' , $user_id)->get();
+        $data = order::with('orders.food')
+        ->where('user_id' , $user_id)
+        ->orderBy('created_at','desc')
+        ->get();
         return view('user.reservation' , compact('data'));
     }
+    /**
+     * Review
+     */
+    public function Review(Request $request)
+    {
+        $order_id = $request->order_id;
+        $review = $request->review; 
+        $update_review = order::find($order_id)->update(['feedback' => $review]);
+        $message = "Review updated for Order ID: $order_id. Thank you for sharing your feedback! We appreciate you choosing our services.";
 
+        return redirect()->back()->with('success', $message);
+    }
+
+    /**
+     * Admin Reservation
+     */
+    public function AdminReservation()
+    {
+        $data = Order::with('user_detail','orders.food')
+        ->orderBy('created_at', 'desc')
+        ->get();    
+        return view('admin.reservation' , compact('data'));
+    }
+
+
+    public function UpdateStatus(Request $request, $id)
+{
+    $order = Order::findOrFail($id);
+
+    if ($request->has('status') && in_array($request->status, [1, 2])) {
+        $order->status = $request->status;
+        $order->save();
+
+        // Add any additional logic or redirects as needed
+
+        $message = "Order status updated for Order ID: $id";
+
+    }
+
+    return redirect()->back()->with('success', $message);
+}
+    
 }

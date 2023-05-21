@@ -26,8 +26,8 @@
           </h2>       
                     
           <p class="">Please proceed your payment to the details below and upload your payment receipt:</p>
-          <div class="flex justify-center py-6 w-24">
-            <img src="{{ asset('storage/qr.png') }}" alt="qrpay" class="flex items-center w-32">
+          <div class="flex justify-center py-6 w-full">
+            <img src="{{ asset('storage/qr.png') }}" alt="qrpay">
           </div>
           <div class="bg-white shadow-md rounded my-4">
 
@@ -36,12 +36,20 @@
             <div class="flex justify-between items-center bg-gray-200 py-4 px-4">
               <p class="text-lg font-bold">Total : RM {{ number_format($total_food, 2);  }}</p>
               <div class="float-end">
+
+                @if(isset(request()->order_id))
+                  <a  href="#upload-receipt"  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Upload receipt
+                  </a>
+
+                @else
                   <a class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" href="{{ route('cart') }}">
                     Back to cart
                   </a>
                   <a  href="#upload-receipt"  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Upload receipt
                   </a>
+                @endif
               </div>
             </div>
           </div>
@@ -52,7 +60,15 @@
 
     <div class="modal" id="upload-receipt">
       <div class="modal-box">
+        @if(isset(request()->order_id))
+    
+        <form action="{{ route('update.receipt') }}" method="POST" enctype="multipart/form-data">
+        <input name="order_id" value="{{ request()->order_id }}" hidden>
+
+        @else
         <form action="{{ route('upload.receipt') }}" method="POST" enctype="multipart/form-data">
+
+        @endif
           @csrf
           <h3 class="font-bold text-lg">Upload receipt</h3>
     

@@ -41,8 +41,8 @@
                   <th class="py-3 px-6 text-left">Name</th>
                   <th class="py-3 px-6 text-center">Price (RM)</th>
                   <th class="py-3 px-6 text-center">Category</th>
-                  <th class="py-3 px-6 text-center">Status</th>
-                  <th class="py-3 px-6 text-center">Action</th>
+                  {{-- <th class="py-3 px-6 text-center">Status</th> --}}
+                  {{-- <th class="py-3 px-6 text-center">Action</th> --}}
                 </tr>
               </thead>
               
@@ -60,19 +60,7 @@
                     <td class="py-3 px-6 text-center">
                       {{ $food->category->name }}
                     </td>
-                    <td class="py-3 px-6 text-center">
-                      <span class="{{ $food->status == 'Active' ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600' }} py-1 px-3 rounded-full text-xs">
-                        {{ $food->status }}
-                      </span>
-                    
-                      
-                    </td>
-                    <td class="py-3 px-6 text-center">
-  
-                  <!-- The button to open modal -->
-                    <a href="#edit-food-{{ $food->id }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add to cart</a>
-                    </td>
-  
+        
                   </tr>
                 @endforeach
                 <!-- Add more rows as needed -->

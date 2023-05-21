@@ -18,7 +18,19 @@
                 <x-label for="email" value="{{ __('Email') }}" />
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             </div>
-
+            <div class="mt-4">
+                <label for="phone_number" class="block font-medium text-sm text-gray-700">{{ __('Phone Number') }}</label>
+                <div class="flex items-center">
+                    <span class="text-gray-500">+60</span>
+                    <input id="phone_number" class="ml-2 block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" type="text" name="phone_number" value="{{ old('phone_number') }}" required autofocus autocomplete="phone_number" maxlength="10">
+                </div>
+                @error('phone_number')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+            
+            
+            
             <div class="mt-4">
                 <x-label for="password" value="{{ __('Password') }}" />
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
