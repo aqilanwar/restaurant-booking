@@ -83,28 +83,29 @@
                   <div class="modal-box">
                     <div class="flex flex-col">
                       <div class="flex items-center font-bold bg-gray-100 p-2">
-                        <div class="w-1/3 px-4">Order detail</div>
+                        <div class="px-4">Order detail</div>
                       </div>
                       @php
                         $total = 0;
                       @endphp
                       @foreach ($order->orders as $food_detail)
-                      <div class="flex items-center p-2">
+                      <div class="flex justify-between items-center p-2">
                         <div class="px-4">
-                          <h3 class="text-lg-500">{{ $food_detail->food->food_name }}</h3>
+                          <h3 class="text-lg font-semibold">{{ $food_detail->food->food_name }}</h3>
                           <img src="{{ asset('storage/' . $food_detail->food->image) }}" alt="Product Image" class="w-16 h-16 rounded-full">
                         </div>
                         <div class="px-4">
-                          <h3 class="text-lg font-semibold">Price: RM{{ $food_detail->price }}</h3>
-                          <p class="text-gray-500">Quantity: {{ $food_detail->quantity }}</p>
+                          <p class="text-gray-500">Price: RM{{ $food_detail->price }}</p>
+                          <p class="text-gray-500 text-end">Quantity: {{ $food_detail->quantity }}</p>
                         </div>
                       </div>
+                      
                       @php
                         $total += $food_detail->price* $food_detail->quantity;
                       @endphp
                       @endforeach
                       <div class="flex justify-end font-bold bg-gray-100 p-2">
-                        <div class="w-1/3 px-4">Total : RM {{number_format($total, 2)}}</div>
+                        <div class="px-4">Total : RM {{number_format($total, 2)}}</div>
                       </div>
                     </div>
                     @if($order->feedback)

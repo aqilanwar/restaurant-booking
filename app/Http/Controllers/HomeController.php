@@ -19,7 +19,10 @@ class HomeController extends Controller
     }
 
     public function HomePage(){
-        $data = food::with('category')->get();
+        $data = food::with('category')
+        ->where('is_deleted', false)
+        ->where('status', true)
+        ->get();
         return view('welcome' , compact('data'));
     }
 }

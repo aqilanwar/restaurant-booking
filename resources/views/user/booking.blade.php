@@ -36,16 +36,19 @@
                 <form action="{{ session()->has('order') ? route('cancel.booking') : route('check.booking') }}" method="POST">
                   @csrf
                   <label for="date" class="block font-medium text-gray-700">Select date:</label>
-                  <input type="date"  min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"  id="date" name="booking_date" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                         value="{{ session()->has('order') ? session('order.booking_date') : '' }}" required {{ session()->has('order') ? 'disabled' : ''}}>
+                  <input type="date" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" id="date" name="booking_date" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="{{ session()->has('order') ? session('order.booking_date') : '' }}" required {{ session()->has('order') ? 'disabled' : '' }}>
                   
-                  <label for="date" class="block font-medium text-gray-700">Select time:</label>
-                  <select id="time" name="booking_time" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required {{ session()->has('order') ? 'disabled' : ''}}>
+                  <label for="time" class="block font-medium text-gray-700">Select time:</label>
+                  <select id="time" name="booking_time" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" required {{ session()->has('order') ? 'disabled' : '' }} id="time">
                       <option value="" disabled selected>Select time</option>
-                      <option value="10.00 am - 12.00 pm" {{ session()->has('order') && session('order.booking_time') == '10.00 am - 12.00 pm' ? 'selected' : '' }}>10.00 am - 12.00 pm</option>
-                      <option value="12.00 pm - 2.00 pm" {{ session()->has('order') && session('order.booking_time') == '12.00 pm - 2.00 pm' ? 'selected' : '' }}>12.00 pm - 2.00 pm</option>
-                      <option value="2.00 pm - 4.00 pm" {{ session()->has('order') && session('order.booking_time') == '2.00 pm - 4.00 pm' ? 'selected' : '' }}>2.00 pm - 4.00 pm</option>
-                      <option value="4.00 pm - 6.00 pm" {{ session()->has('order') && session('order.booking_time') == '4.00 pm - 6.00 pm' ? 'selected' : '' }}>4.00 pm - 6.00 pm</option>
+                      <option value="08.00 - 10.00" {{ session()->has('order') && session('order.booking_time') == '10.00 am - 12.00 pm' ? 'selected' : '' }}>8.00 am - 10.00 am</option>
+                      <option value="10.00 - 12.00" {{ session()->has('order') && session('order.booking_time') == '12.00 pm - 2.00 pm' ? 'selected' : '' }}>10.00 am - 12.00 pm</option>
+                      <option value="12.00 - 14.00" {{ session()->has('order') && session('order.booking_time') == '2.00 pm - 4.00 pm' ? 'selected' : '' }}>12.00 pm - 2.00 pm</option>
+                      <option value="14.00 - 16.00" {{ session()->has('order') && session('order.booking_time') == '2.00 pm - 4.00 pm' ? 'selected' : '' }}>2.00 pm - 4.00 pm</option>
+                      <option value="16.00 - 18.00" {{ session()->has('order') && session('order.booking_time') == '4.00 pm - 6.00 pm' ? 'selected' : '' }}>4.00 pm - 6.00 pm</option>
+                      <option value="18.00 - 20.00" {{ session()->has('order') && session('order.booking_time') == '6.00 pm - 8.00 pm' ? 'selected' : '' }}>6.00 pm - 8.00 pm</option>
+                      <option value="20.00 - 22.00" {{ session()->has('order') && session('order.booking_time') == '6.00 pm - 8.00 pm' ? 'selected' : '' }}>8.00 pm - 10.00 pm</option>
+                      <option value="22.00 - 24.00" {{ session()->has('order') && session('order.booking_time') == '6.00 pm - 8.00 pm' ? 'selected' : '' }}>10.00 pm - 12.00 am</option>
                   </select>
                   
               </div>
@@ -137,3 +140,35 @@
      </div>  
 
 </x-app-layout>
+<script>
+  const timeInput = document.getElementById('time');
+  const dateInput = document.getElementById('date');
+  const currentTime = new Date();
+
+  // Disable options that have already passed
+
+  const options = timeInput.options;
+  dateInput.addEventListener('change', function(event) {
+    const selectedDate = event.target.value;
+    console.log(selectedDate);
+    timeInput.value = "";
+
+    for (let i = 0; i < options.length; i++) {
+      const optionValue = options[i].value;
+      const timeRange = optionValue.split(' - ')[0]; // Extract the start time from the option value
+
+      // Compare the time range with the current time
+      const [hour, minute] = timeRange.split('.').map(parseFloat);
+      const optionTime = new Date(selectedDate);
+      optionTime.setHours(hour, minute, 0); // Set the time part of the option date
+      console.log(optionTime)
+      if (optionTime < currentTime) {
+        options[i].disabled = true;
+      }else{
+        options[i].disabled = false;
+      }
+    }
+  });
+  
+
+</script>

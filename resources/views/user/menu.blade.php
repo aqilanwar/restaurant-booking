@@ -41,8 +41,7 @@
                   <th class="py-3 px-6 text-left">Name</th>
                   <th class="py-3 px-6 text-center">Price (RM)</th>
                   <th class="py-3 px-6 text-center">Category</th>
-                  {{-- <th class="py-3 px-6 text-center">Status</th> --}}
-                  {{-- <th class="py-3 px-6 text-center">Action</th> --}}
+
                 </tr>
               </thead>
               

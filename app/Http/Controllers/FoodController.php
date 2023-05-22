@@ -13,24 +13,16 @@ class FoodController extends Controller
      */
     public function index()
     {
-        $categories = category::all();
-        $data = food::with('category')->get();
+        $categories = category::where('is_deleted',false)->get();
+        $data = food::with('category')->where('is_deleted' , false)->get();
         return view('admin.DisplayFood' , compact('data' , 'categories'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      */
-        public function store(Request $request)
-        {
+    public function store(Request $request)
+    {
             $validated = $request->validate([
                 'food_name' => 'required',
                 'price' => 'required',
@@ -55,14 +47,6 @@ class FoodController extends Controller
             ]);
             // Redirect the user back to the categories index page with a success message
             return redirect()->back()->with('success', 'Food created successfully.');
-        }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(food $food)
-    {
-        //
     }
 
     /**
@@ -99,32 +83,33 @@ class FoodController extends Controller
         return redirect()->back()->with('success', 'Food updated successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, food $food)
-    {
-        //
-    }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource (soft delete).
      */
-    public function destroy(food $food)
+    public function destroy(Request $request)
     {
-        //
+        food::where('id', $request->id)->update(['is_deleted' => true]);
+        return redirect()->back()->with('success', 'Food deleted successfully.');
+
     }
 
     public function UserView(Request $request)
     {
-        $categories = category::all();
+        $categories = category::where('is_deleted', false)
+        ->get();
 
         // Check if id parameter is present
         if ($request->has('id')) {
             $id = $request->input('id');
-            $data = food::where('category_id', $id)->with('category')->get();
+            $data = food::where('category_id', $id)
+            ->where('status', true)
+            ->where('is_deleted', false)
+            ->with('category')->get();
         } else {
-            $data = food::with('category')->get();
+            $data = food::where('status', true)
+            ->where('is_deleted', false)
+            ->with('category')->get();
         }
     
         return view('user.menu', compact('data', 'categories'));

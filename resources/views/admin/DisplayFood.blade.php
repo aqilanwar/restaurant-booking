@@ -95,7 +95,7 @@
 
                 <!-- The button to open modal -->
                   <a href="#edit-food-{{ $food->id }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</a>
-                  <a href="#" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</a>
+                  <a href="#delete-food-{{ $food->id }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</a>
                   </td>
 
                 </tr>
@@ -150,5 +150,29 @@
       </form>
     </div>
   </div>
+  <div class="modal" id="delete-food-{{ $food->id }}">
+    <div class="modal-box">
+        <div class="flex flex-col">
+          <h3 class="font-bold text-lg">Are you sure to delete this ? </h3>
+
+          
+          <div class="flex justify-between items-center p-2">
+            <img src="{{ asset('storage/' . $food->image) }}" alt="Product Image" class="w-16 h-16 rounded-full">
+            <h3 class="text-lg font-semibold">{{ $food->food_name }}</h3>
+            <div class="px-4">
+            </div>
+            <div class="px-4">
+              <p class="text-gray-500">Price: RM{{ $food->price }}</p>
+            </div>
+          </div>
+
+          <div class="modal-action">
+            <a href="#" class="btn">Cancel</a>
+            <a href="{{ route('food.destroy', ['id' => $food->id]) }}" class="btn btn-active btn-error">Delete</a>
+          </div>
+      </div>
+    </div>
+  </div>
   @endforeach
+
 </x-app-layout>

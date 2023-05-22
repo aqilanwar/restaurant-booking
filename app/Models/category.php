@@ -22,4 +22,10 @@ class category extends Model
     {
         return $value ? 'Active' : 'Disabled';
     }
+
+    public function foods()
+    {
+        return $this->hasMany(food::class);
+    }
+
 }

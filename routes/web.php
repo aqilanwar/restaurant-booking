@@ -53,7 +53,9 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/food', [FoodController::class, 'index'])->name('food');
     Route::post('/admin/food/create', [FoodController::class, 'store'])->name('food.create');
     Route::post('/admin/food/edit', [FoodController::class, 'edit'])->name('food.edit');
-    Route::post('/admin/food/destroy', [FoodController::class, 'destroy'])->name('food.destroy');
+    Route::get('/admin/food/destroy/{id}', [FoodController::class, 'destroy'])->name('food.destroy');
+    Route::get('/admin/category/destroy/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+    Route::post('/admin/category/edit', [CategoryController::class, 'edit'])->name('category.edit');
 
 });
 

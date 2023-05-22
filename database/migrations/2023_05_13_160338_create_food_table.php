@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('status');
             $table->string('image')->nullable();
             $table->string('category_id'); 
+            $table->boolean('is_deleted')->default(0); 
             $table->timestamps();
         });
     }
