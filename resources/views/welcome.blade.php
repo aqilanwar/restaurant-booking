@@ -10,7 +10,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
-        <link rel="icon" href="{{ asset('storage/image/logo.jpg') }}" type="image/x-icon">
+        <link rel="icon" href="{{ asset('storage/image/logo.png') }}" type="image/x-icon">
 
         <script src="https://cdn.tailwindcss.com"></script>
         {{-- <!-- Styles -->
